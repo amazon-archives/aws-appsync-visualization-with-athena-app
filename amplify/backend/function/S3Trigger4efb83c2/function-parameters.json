@@ -1,0 +1,10 @@
+{
+    "permissions": {
+        "api": {
+            "athenaGraphQlAPI": [
+                "create",
+                "update"
+            ]
+        }
+    }
+}

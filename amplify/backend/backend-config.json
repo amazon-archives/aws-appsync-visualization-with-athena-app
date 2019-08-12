@@ -1,0 +1,52 @@
+{
+    "auth": {
+        "appsyncathena9e834223": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": []
+        }
+    },
+    "api": {
+        "athenaGraphQlAPI": {
+            "service": "AppSync",
+            "providerPlugin": "awscloudformation",
+            "output": {
+                "securityType": "AMAZON_COGNITO_USER_POOLS"
+            }
+        }
+    },
+    "function": {
+        "S3Trigger4efb83c2": {
+            "service": "Lambda",
+            "providerPlugin": "awscloudformation",
+            "build": true,
+            "dependsOn": [
+                {
+                    "category": "api",
+                    "resourceName": "athenaGraphQlAPI",
+                    "attributes": [
+                        "GraphQLAPIIdOutput",
+                        "GraphQLAPIEndpointOutput"
+                    ]
+                }
+            ]
+        }
+    },
+    "storage": {
+        "s3fe2f9349": {
+            "service": "S3",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "function",
+                    "resourceName": "S3Trigger4efb83c2",
+                    "attributes": [
+                        "Name",
+                        "Arn",
+                        "LambdaExecutionRole"
+                    ]
+                }
+            ]
+        }
+    }
+}

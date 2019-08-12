@@ -1,0 +1,314 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "An auto-generated nested stack.",
+  "Metadata": {},
+  "Parameters": {
+    "AppSyncApiId": {
+      "Type": "String",
+      "Description": "The id of the AppSync API associated with this project."
+    },
+    "AppSyncApiName": {
+      "Type": "String",
+      "Description": "The name of the AppSync API",
+      "Default": "AppSyncSimpleTransform"
+    },
+    "env": {
+      "Type": "String",
+      "Description": "The environment name. e.g. Dev, Test, or Production",
+      "Default": "NONE"
+    },
+    "S3DeploymentBucket": {
+      "Type": "String",
+      "Description": "The S3 bucket containing all deployment assets for the project."
+    },
+    "S3DeploymentRootKey": {
+      "Type": "String",
+      "Description": "An S3 key relative to the S3DeploymentBucket that points to the root\nof the deployment directory."
+    }
+  },
+  "Resources": {
+    "AppSyncAthenaRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": {
+          "Fn::Join": [
+            "-",
+            ["appSyncAthenaRole", { "Ref": "AppSyncApiId" }, { "Ref": "env" }]
+          ]
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AmazonAthenaFullAccess",
+          "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+        ],
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": ["appsync.amazonaws.com"]
+              },
+              "Action": ["sts:AssumeRole"]
+            }
+          ]
+        }
+      }
+    },
+    "DataSourceAthenaAPI": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Ref": "AppSyncApiId"
+        },
+        "Name": "AthenaAPI",
+        "Description": "Athena API",
+        "Type": "HTTP",
+        "ServiceRoleArn": { "Fn::GetAtt": ["AppSyncAthenaRole", "Arn"] },
+        "HttpConfig": {
+          "Endpoint": {
+            "Fn::Join": [
+              ".",
+              ["https://athena", { "Ref": "AWS::Region" }, "amazonaws.com/"]
+            ]
+          },
+          "AuthorizationConfig": {
+            "AuthorizationType": "AWS_IAM",
+            "AwsIamConfig": {
+              "SigningRegion": { "Ref": "AWS::Region" },
+              "SigningServiceName": "athena"
+            }
+          }
+        }
+      }
+    },
+    "MultiAuthSchema": {
+      "Type": "AWS::AppSync::GraphQLSchema",
+      "Properties": {
+        "ApiId": {
+          "Ref": "AppSyncApiId"
+        },
+        "Definition": {
+          "Fn::Join": [
+            "\n",
+            [
+              "input AnnounceInput { QueryExecutionId: ID file: S3ObjectInput }",
+              "type AthenaQueryResult @aws_cognito_user_pools @aws_iam { QueryExecutionId: ID! file: S3Object }",
+              "type Mutation { announceQueryResult(input: AnnounceInput!): AthenaQueryResult @aws_iam }",
+              "type Query { startQuery(input: QueryInput): AthenaQueryResult } ",
+              "input QueryInput { QueryString: String! }",
+              "type S3Object @aws_iam { bucket: String! region: String! key: String! }",
+              "input S3ObjectInput { bucket: String! region: String! key: String! }",
+              "type Subscription { onAnnouncement(QueryExecutionId: ID!): AthenaQueryResult @aws_subscribe(mutations: [\"announceQueryResult\"]) }"
+            ]
+          ]
+        }
+      }
+    },
+    "DataSourceNone": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Ref": "AppSyncApiId"
+        },
+        "Name": "None",
+        "Description": "None",
+        "Type": "NONE"
+      }
+    },
+    "QueryStartQueryResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "DependsOn": "MultiAuthSchema",
+      "Properties": {
+        "ApiId": {
+          "Ref": "AppSyncApiId"
+        },
+        "DataSourceName": { "Fn::GetAtt": ["DataSourceAthenaAPI", "Name"] },
+        "TypeName": "Query",
+        "FieldName": "startQuery",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Query.startQuery.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Query.startQuery.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "AnnounceQueryResultResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "DependsOn": "MultiAuthSchema",
+      "Properties": {
+        "ApiId": {
+          "Ref": "AppSyncApiId"
+        },
+        "DataSourceName": { "Fn::GetAtt": ["DataSourceNone", "Name"] },
+        "TypeName": "Mutation",
+        "FieldName": "announceQueryResult",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.announceQueryResult.req.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.announceQueryResult.res.vtl",
+            {
+              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
+              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+            }
+          ]
+        }
+      }
+    },
+    "MultiAuthGraphQLAPILambda": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": {
+            "Fn::Join": [
+              "\n",
+              [
+                "const AWS = require('aws-sdk')",
+                "const response = require('cfn-response')",
+                "const appsync = new AWS.AppSync()",
+                "exports.handler = (event, context, callback) => {",
+                "if (event.RequestType === 'Delete') {",
+                "return response.send(event, context, response.SUCCESS, {})",
+                "}",
+                "const apiId = event.ResourceProperties.AppSyncApiId",
+                "console.log('event -->', JSON.stringify(event, null, 2))",
+                "appsync.getGraphqlApi({ apiId }).promise().then(data => {",
+                "console.log('data -->', JSON.stringify(data, null, 2))",
+                "const { arn, uris, tags, ...req } = data.graphqlApi",
+                "const params = {",
+                "...req,",
+                "additionalAuthenticationProviders: [{ authenticationType: 'AWS_IAM' }]",
+                "}",
+                "console.log('req -->', JSON.stringify(params, null, 2))",
+                "appsync.updateGraphqlApi(params).promise().then(resp => {",
+                "console.log('resp -->', JSON.stringify(resp, null, 2))",
+                "return response.send(event, context, response.SUCCESS)",
+                "}).catch(err => response.send(event, context, response.FAILED, { err }))",
+                "}).catch(err => response.send(event, context, response.FAILED, { err }))",
+                "}"
+              ]
+            ]
+          }
+        },
+        "Handler": "index.handler",
+        "Runtime": "nodejs8.10",
+        "Timeout": "60",
+        "Role": { "Fn::GetAtt": ["MultiAuthGraphQLAPILambdaRole", "Arn"] }
+      },
+      "DependsOn": "MultiAuthGraphQLAPILambdaRole"
+    },
+    "MultiAuthGraphQLAPILambdaRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": {
+          "Fn::Join": [
+            "-",
+            [
+              "MultiAuthGraphQLAPILambdaRole",
+              { "Ref": "AppSyncApiId" },
+              { "Ref": "env" }
+            ]
+          ]
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+        ],
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": ["lambda.amazonaws.com"]
+              },
+              "Action": ["sts:AssumeRole"]
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "update-graphql-api-policy",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "appsync:GetGraphqlApi",
+                    "appsync:UpdateGraphqlApi"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:appsync:",
+                          { "Ref": "AWS::Region" },
+                          ":",
+                          { "Ref": "AWS::AccountId" },
+                          ":apis/",
+                          { "Ref": "AppSyncApiId" }
+                        ]
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "MultiAuthGraphQLAPI": {
+      "Type": "Custom::MultiAuthGraphQLAPIResource",
+      "Properties": {
+        "ServiceToken": { "Fn::GetAtt": ["MultiAuthGraphQLAPILambda", "Arn"] },
+        "AppSyncApiId": { "Ref": "AppSyncApiId" }
+      },
+      "DependsOn": "MultiAuthGraphQLAPILambda"
+    }
+  },
+  "Conditions": {
+    "HasEnvironmentParameter": {
+      "Fn::Not": [
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "env"
+            },
+            "NONE"
+          ]
+        }
+      ]
+    },
+    "AlwaysFalse": {
+      "Fn::Equals": ["true", "false"]
+    }
+  },
+  "Outputs": {
+    "EmptyOutput": {
+      "Description": "An empty output. You may delete this if you have at least one resource above.",
+      "Value": ""
+    }
+  }
+}
