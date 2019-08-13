@@ -1,8 +1,8 @@
 # Visualizing big data with AWS AppSync, Amazon Athena, and AWS Amplify
 
-[![amplifybutton](https://oneclick.amplifyapp.com/button.svg)](https://console.aws.amazon.com/amplify/home#/deploy?repo=<REPO>)
+[![amplifybutton](https://oneclick.amplifyapp.com/button.svg)](https://console.aws.amazon.com/amplify/home#/deploy?repo=https://github.com/aws-samples/aws-appsync-visualization-with-athena-app)
 
-This project shows how to use [Amazon Athena](https://aws.amazon.com/athena/), [AWS AppSync](https://aws.amazon.com/appsync/), and [AWS Amplify](https://aws.amazon.com/amplify/) to build an application that interacts with big data. The application is built using React, the [AWS Amplify Javascript library](https://github.com/aws-amplify/amplify-js), and the [D3.js](https://d3js.org/) Javascript library to render custom visualizations. The application code can be found in this [GitHub repository](<REPO>)
+This project shows how to use [Amazon Athena](https://aws.amazon.com/athena/), [AWS AppSync](https://aws.amazon.com/appsync/), and [AWS Amplify](https://aws.amazon.com/amplify/) to build an application that interacts with big data. The application is built using React, the [AWS Amplify Javascript library](https://github.com/aws-amplify/amplify-js), and the [D3.js](https://d3js.org/) Javascript library to render custom visualizations. The application code can be found in this [GitHub repository](https://github.com/aws-samples/aws-appsync-visualization-with-athena-app)
 It uses Amazon Athena to query data hosted in a public Amazon Simple Storage Service (Amazon S3) bucket by the [Registry of Open Data on AWS](https://registry.opendata.aws/). Specifically, the [High Resolution Population Density Maps + Demographic Estimates by CIESIN and Facebook](https://registry.opendata.aws/dataforgood-fb-hrsl/) is used. 
 This public dataset provides "population data for a selection of countries, allocated to 1 arcsecond blocks and provided in a combination of CSV and Cloud-optimized GeoTIFF files", and is hosted in the S3 bucket `s3://dataforgood-fb-data`
 
@@ -35,3 +35,7 @@ For more information about this app and how to get started, please see the [blog
 9. The client retrieves the result file from the S3 bucket and displays the custom visualization.
 
 ![App Snapshot](app-image.png)
+
+## License Summary
+
+This sample code is made available under the MIT-0 license. See the LICENSE file.
