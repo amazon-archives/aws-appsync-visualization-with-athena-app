@@ -11,3 +11,9 @@ else
   suffix="$RESULT_BUCKET_SUFFIX"
 fi
 sed -i "s/aws-athena-query-results[^\"]*/aws-athena-query-results-$suffix/" $file
+
+
+echo "****************************************************************"
+echo "Your S3 bucket in which Athena can store your query results:"
+echo ">> aws_user_files_s3_bucket: aws-athena-query-results-$suffix <<"
+echo "****************************************************************"
