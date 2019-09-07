@@ -1,6 +1,6 @@
 # Visualizing big data queries with AWS AppSync, Amazon Athena, and AWS Amplify
 
-[![amplifybutton](https://oneclick.amplifyapp.com/button.svg)](https://console.aws.amazon.com/amplify/home#/deploy?repo=https://github.com/onlybakam/aws-appsync-athena-2)
+[![amplifybutton](https://oneclick.amplifyapp.com/button.svg)](https://console.aws.amazon.com/amplify/home#/deploy?repo=https://github.com/onlybakam/aws-appsync-visualization-with-athena-app--verify)
 
 This project demonstrates how to use Amazon Athena, AWS Appsync, and AWS Amplify to build an application that interacts with big data sets. The application is built using React, the AWS Amplify Javascript library, and the [D3.js](https://d3js.org/) Javascript library to render custom visualizations.
 It uses Amazon Athena to query data hosted in a public Amazon S3 bucket by the [Registry of Open Data on AWS](https://registry.opendata.aws/). Specifically, the [High Resolution Population Density Maps + Demographic Estimates by CIESIN and Facebook](https://registry.opendata.aws/dataforgood-fb-hrsl/) is used.
