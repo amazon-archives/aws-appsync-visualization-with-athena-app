@@ -1,0 +1,19 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "appsyncathenaviz-dev-20190907144428-authRole",
+            "UnauthRoleArn": "arn:aws:iam::714090130982:role/appsyncathenaviz-dev-20190907144428-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::714090130982:role/appsyncathenaviz-dev-20190907144428-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "appsyncathenaviz-dev-20190907144428-deployment",
+            "UnauthRoleName": "appsyncathenaviz-dev-20190907144428-unauthRole",
+            "StackName": "appsyncathenaviz-dev-20190907144428",
+            "StackId": "arn:aws:cloudformation:us-east-1:714090130982:stack/appsyncathenaviz-dev-20190907144428/e7a03290-d1a7-11e9-907d-0a9be5775b42"
+        },
+        "categories": {
+            "auth": {
+                "appsyncathenavizb9ef8f65": {}
+            }
+        }
+    }
+}

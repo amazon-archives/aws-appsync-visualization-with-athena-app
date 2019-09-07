@@ -1,13 +1,13 @@
 {
     "auth": {
-        "appsyncathena9e834223": {
+        "appsyncathenavizb9ef8f65": {
             "service": "Cognito",
             "providerPlugin": "awscloudformation",
             "dependsOn": []
         }
     },
     "api": {
-        "athenaGraphQlAPI": {
+        "appsyncathenaviz": {
             "service": "AppSync",
             "providerPlugin": "awscloudformation",
             "output": {
@@ -16,14 +16,14 @@
         }
     },
     "function": {
-        "S3Trigger4efb83c2": {
+        "S3Trigger20d9f806": {
             "service": "Lambda",
             "providerPlugin": "awscloudformation",
             "build": true,
             "dependsOn": [
                 {
                     "category": "api",
-                    "resourceName": "athenaGraphQlAPI",
+                    "resourceName": "appsyncathenaviz",
                     "attributes": [
                         "GraphQLAPIIdOutput",
                         "GraphQLAPIEndpointOutput"
@@ -33,13 +33,13 @@
         }
     },
     "storage": {
-        "s3fe2f9349": {
+        "sQueryResults": {
             "service": "S3",
             "providerPlugin": "awscloudformation",
             "dependsOn": [
                 {
                     "category": "function",
-                    "resourceName": "S3Trigger4efb83c2",
+                    "resourceName": "S3Trigger20d9f806",
                     "attributes": [
                         "Name",
                         "Arn",

@@ -1,9 +1,8 @@
 {
-    "identityPoolName": "appsyncathena9e834223_identitypool_9e834223",
+    "identityPoolName": "appsyncathenavizb9ef8f65_identitypool_b9ef8f65",
     "allowUnauthenticatedIdentities": false,
-    "openIdLambdaRoleName": "appsyn9e834223_openid_lambda_role",
-    "resourceNameTruncated": "appsyn9e834223",
-    "userPoolName": "appsyncathena9e834223_userpool_9e834223",
+    "resourceNameTruncated": "appsynb9ef8f65",
+    "userPoolName": "appsyncathenavizb9ef8f65_userpool_b9ef8f65",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -21,7 +20,6 @@
     "requiredAttributes": [
         "email"
     ],
-    "userpoolClientName": "appsyn9e834223_app_client",
     "userpoolClientGenerateSecret": true,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
@@ -30,17 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "mfaLambdaRole": "appsyn9e834223_totp_lambda_role",
-    "userpoolClientLambdaRole": "appsyn9e834223_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "appsynb9ef8f65_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "resourceName": "appsyncathena9e834223",
+    "resourceName": "appsyncathenavizb9ef8f65",
     "authSelections": "identityPoolAndUserPool",
-    "authRoleName": {
-        "Ref": "AuthRoleName"
-    },
-    "unauthRoleName": {
-        "Ref": "UnauthRoleName"
-    },
     "authRoleArn": {
         "Fn::GetAtt": [
             "AuthRole",
@@ -54,6 +45,5 @@
         ]
     },
     "useDefault": "default",
-    "additionalQuestions": [],
     "dependsOn": []
 }
