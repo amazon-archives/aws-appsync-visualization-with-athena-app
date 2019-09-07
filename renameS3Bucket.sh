@@ -1,6 +1,6 @@
 #!/bin/bash
 
-file="./amplify/backend/storage/s3fe2f9349/parameters.json"
+file="./amplify/backend/storage/sQueryResults/parameters.json"
 
 if [ -z "$RESULT_BUCKET_SUFFIX" ]; then
   rand=`dd if=/dev/urandom bs=9 count=1 2>/dev/null | base64 | tr '+/' 'a'| tr '[:upper:]' '[:lower:]'`
