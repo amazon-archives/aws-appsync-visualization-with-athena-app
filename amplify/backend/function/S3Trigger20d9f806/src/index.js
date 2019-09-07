@@ -2,8 +2,8 @@
 You can access the following resource attributes as environment variables from your Lambda function
 var environment = process.env.ENV
 var region = process.env.REGION
-var apiAthenaGraphQlAPIGraphQLAPIIdOutput = process.env.API_ATHENAGRAPHQLAPI_GRAPHQLAPIIDOUTPUT
-var apiAthenaGraphQlAPIGraphQLAPIEndpointOutput = process.env.API_ATHENAGRAPHQLAPI_GRAPHQLAPIENDPOINTOUTPUT
+var apiAthenaGraphQlAPIGraphQLAPIIdOutput = process.env.API_APPSYNCATHENAVIZ_GRAPHQLAPIIDOUTPUT
+var apiAthenaGraphQlAPIGraphQLAPIEndpointOutput = process.env.API_APPSYNCATHENAVIZ_GRAPHQLAPIENDPOINTOUTPUT
 
 Amplify Params - DO NOT EDIT */
 
@@ -13,7 +13,7 @@ const urlParse = require('url').URL
 const mutation = require('./mutation').announceQueryResult
 
 const apiRegion = process.env.REGION
-const apiEndpoint = process.env.API_ATHENAGRAPHQLAPI_GRAPHQLAPIENDPOINTOUTPUT
+const apiEndpoint = process.env.API_APPSYNCATHENAVIZ_GRAPHQLAPIENDPOINTOUTPUT
 const endpoint = new urlParse(apiEndpoint).hostname.toString()
 
 exports.handler = async (event, context) => {

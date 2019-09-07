@@ -71,17 +71,17 @@
         "triggerFunction": {
             "Type": "String"
         },
-        "functionS3Trigger4efb83c2Arn": {
+        "functionS3Trigger20d9f806Arn": {
             "Type": "String",
-            "Default": "functionS3Trigger4efb83c2Arn"
+            "Default": "functionS3Trigger20d9f806Arn"
         },
-        "functionS3Trigger4efb83c2Name": {
+        "functionS3Trigger20d9f806Name": {
             "Type": "String",
-            "Default": "functionS3Trigger4efb83c2Name"
+            "Default": "functionS3Trigger20d9f806Name"
         },
-        "functionS3Trigger4efb83c2LambdaExecutionRole": {
+        "functionS3Trigger20d9f806LambdaExecutionRole": {
             "Type": "String",
-            "Default": "functionS3Trigger4efb83c2LambdaExecutionRole"
+            "Default": "functionS3Trigger20d9f806LambdaExecutionRole"
         }
     },
     "Conditions": {
@@ -249,13 +249,13 @@
                         {
                             "Event": "s3:ObjectCreated:*",
                             "Function": {
-                                "Ref": "functionS3Trigger4efb83c2Arn"
+                                "Ref": "functionS3Trigger20d9f806Arn"
                             }
                         },
                         {
                             "Event": "s3:ObjectRemoved:*",
                             "Function": {
-                                "Ref": "functionS3Trigger4efb83c2Arn"
+                                "Ref": "functionS3Trigger20d9f806Arn"
                             }
                         }
                     ]
@@ -691,12 +691,54 @@
                 }
             }
         },
+        "S3TriggerBucketPolicy": {
+            "Type": "AWS::IAM::Policy",
+            "DependsOn": [
+                "S3Bucket"
+            ],
+            "Properties": {
+                "PolicyName": "s3-trigger-lambda-execution-policy",
+                "Roles": [
+                    {
+                        "Ref": "functionS3Trigger20d9f806LambdaExecutionRole"
+                    }
+                ],
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "s3:PutObject",
+                                "s3:GetObject",
+                                "s3:ListBucket",
+                                "s3:DeleteObject"
+                            ],
+                            "Resource": [
+                                {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "arn:aws:s3:::",
+                                            {
+                                                "Ref": "S3Bucket"
+                                            },
+                                            "/*"
+                                        ]
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
         "TriggerPermissions": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
                 "Action": "lambda:InvokeFunction",
                 "FunctionName": {
-                    "Ref": "functionS3Trigger4efb83c2Name"
+                    "Ref": "functionS3Trigger20d9f806Name"
                 },
                 "Principal": "s3.amazonaws.com",
                 "SourceAccount": {
@@ -730,48 +772,6 @@
                                 ]
                             }
                         ]
-                    ]
-                }
-            }
-        },
-        "S3TriggerBucketPolicy": {
-            "Type": "AWS::IAM::Policy",
-            "DependsOn": [
-                "S3Bucket"
-            ],
-            "Properties": {
-                "PolicyName": "s3-trigger-lambda-execution-policy",
-                "Roles": [
-                    {
-                        "Ref": "functionS3Trigger4efb83c2LambdaExecutionRole"
-                    }
-                ],
-                "PolicyDocument": {
-                    "Version": "2012-10-17",
-                    "Statement": [
-                        {
-                            "Effect": "Allow",
-                            "Action": [
-                                "s3:PutObject",
-                                "s3:GetObject",
-                                "s3:ListBucket",
-                                "s3:DeleteObject"
-                            ],
-                            "Resource": [
-                                {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "arn:aws:s3:::",
-                                            {
-                                                "Ref": "S3Bucket"
-                                            },
-                                            "/*"
-                                        ]
-                                    ]
-                                }
-                            ]
-                        }
                     ]
                 }
             }

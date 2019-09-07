@@ -5,13 +5,13 @@
 		"env": {
 			"Type": "String"
 		},
-		"apiathenaGraphQlAPIGraphQLAPIIdOutput": {
+		"apiappsyncathenavizGraphQLAPIIdOutput": {
 			"Type": "String",
-			"Default": "apiathenaGraphQlAPIGraphQLAPIIdOutput"
+			"Default": "apiappsyncathenavizGraphQLAPIIdOutput"
 		},
-		"apiathenaGraphQlAPIGraphQLAPIEndpointOutput": {
+		"apiappsyncathenavizGraphQLAPIEndpointOutput": {
 			"Type": "String",
-			"Default": "apiathenaGraphQlAPIGraphQLAPIEndpointOutput"
+			"Default": "apiappsyncathenavizGraphQLAPIEndpointOutput"
 		}
 	},
 	"Conditions": {
@@ -36,12 +36,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"S3Trigger4efb83c2",
+						"S3Trigger20d9f806",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"S3Trigger4efb83c2",
+									"S3Trigger20d9f806",
 									"-",
 									{
 										"Ref": "env"
@@ -56,14 +56,14 @@
 						"ENV": {
 							"Ref": "env"
 						},
-						"API_ATHENAGRAPHQLAPI_GRAPHQLAPIIDOUTPUT": {
-							"Ref": "apiathenaGraphQlAPIGraphQLAPIIdOutput"
-						},
-						"API_ATHENAGRAPHQLAPI_GRAPHQLAPIENDPOINTOUTPUT": {
-							"Ref": "apiathenaGraphQlAPIGraphQLAPIEndpointOutput"
-						},
 						"REGION": {
 							"Ref": "AWS::Region"
+						},
+						"API_APPSYNCATHENAVIZ_GRAPHQLAPIIDOUTPUT": {
+							"Ref": "apiappsyncathenavizGraphQLAPIIdOutput"
+						},
+						"API_APPSYNCATHENAVIZ_GRAPHQLAPIENDPOINTOUTPUT": {
+							"Ref": "apiappsyncathenavizGraphQLAPIEndpointOutput"
 						}
 					}
 				},
@@ -76,8 +76,8 @@
 				"Runtime": "nodejs8.10",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "appsync-athena-pdxa-20190729220625-deployment",
-					"S3Key": "amplify-builds/S3Trigger4efb83c2-456c4149756e374e4c4f-build.zip"
+					"S3Bucket": "appsyncathenaviz-dev-20190907144428-deployment",
+					"S3Key": "amplify-builds/S3Trigger20d9f806-45716c345869526e455a-build.zip"
 				}
 			}
 		},
@@ -87,12 +87,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"S3Trigger4efb83c2LambdaRole4efb83c2",
+						"S3Trigger20d9f806LambdaRole20d9f806",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"S3Trigger4efb83c2LambdaRole4efb83c2",
+									"S3Trigger20d9f806LambdaRole20d9f806",
 									"-",
 									{
 										"Ref": "env"
@@ -183,8 +183,7 @@
 							"Action": [
 								"appsync:Create*",
 								"appsync:StartSchemaCreation",
-								"appsync:GraphQL",
-								"appsync:Update*"
+								"appsync:GraphQL"
 							],
 							"Resource": [
 								{
@@ -201,7 +200,7 @@
 											},
 											":apis/",
 											{
-												"Ref": "apiathenaGraphQlAPIGraphQLAPIIdOutput"
+												"Ref": "apiappsyncathenavizGraphQLAPIIdOutput"
 											},
 											"/*"
 										]

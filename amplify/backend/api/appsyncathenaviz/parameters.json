@@ -1,9 +1,10 @@
 {
-    "AppSyncApiName": "athenaGraphQlAPI",
+    "AppSyncApiName": "appsyncathenaviz",
     "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": "false",
     "AuthCognitoUserPoolId": {
         "Fn::GetAtt": [
-            "authappsyncathena9e834223",
+            "authappsyncathenavizb9ef8f65",
             "Outputs.UserPoolId"
         ]
     }
