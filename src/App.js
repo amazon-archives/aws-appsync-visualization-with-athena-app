@@ -72,7 +72,7 @@ const App = () => {
       <div className="row">
         <div className="col-12">
           <h3>
-            Visualizing samples of population density across longitudes
+            Bins of population density across longitudes
           </h3>
         </div>
         <div className="col-12">
