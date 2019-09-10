@@ -12,7 +12,7 @@ This public dataset provides "population data for a selection of countries, allo
 
 ## Getting started
 
-For more information about this app and how to get started, please see the [blog post](http://example.com).
+For more information about this app and how to get started, please see the [blog post](https://aws.amazon.com/blogs/mobile/visualizing-big-data-with-aws-appsync-amazon-athena-and-aws-amplify/).
 
 ### One-click launch
 
