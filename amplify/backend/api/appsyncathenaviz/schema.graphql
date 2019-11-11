@@ -1,3 +1,31 @@
+input AnnounceInput {
+  QueryExecutionId: ID
+  file: S3ObjectInput
+}
+type AthenaQueryResult @aws_cognito_user_pools @aws_iam {
+  QueryExecutionId: ID!
+  file: S3Object
+}
+type Mutation {
+  announceQueryResult(input: AnnounceInput!): AthenaQueryResult @aws_iam
+}
 type Query {
-  startQuery: ID
+  startQuery(input: QueryInput): AthenaQueryResult
+}
+input QueryInput {
+  QueryString: String!
+}
+type S3Object @aws_iam {
+  bucket: String!
+  region: String!
+  key: String!
+}
+input S3ObjectInput {
+  bucket: String!
+  region: String!
+  key: String!
+}
+type Subscription {
+  onAnnouncement(QueryExecutionId: ID!): AthenaQueryResult
+    @aws_subscribe(mutations: ["announceQueryResult"])
 }
