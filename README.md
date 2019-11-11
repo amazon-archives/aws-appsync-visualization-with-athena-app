@@ -10,6 +10,10 @@ This public dataset provides "population data for a selection of countries, allo
 
 ![architecture](architecture.png)
 
+## Updates
+
+* 11/11/19: Updated to support multi auth with Amplify CLI. Requires Amplify CLI version 3.17 and above.
+
 ## Getting started
 
 For more information about this app and how to get started, please see the [blog post](https://aws.amazon.com/blogs/mobile/visualizing-big-data-with-aws-appsync-amazon-athena-and-aws-amplify/).
