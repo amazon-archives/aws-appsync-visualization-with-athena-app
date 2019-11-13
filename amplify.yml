@@ -3,6 +3,8 @@ backend:
   phases:
     preBuild:
       commands:
+        - '# Install aws amplify cli 3.17.0'
+        - npm install -g @aws-amplify/cli@3.17.0
         - '# Genereate unique name for S3 bucket'
         - sh renameS3Bucket.sh
     build:
