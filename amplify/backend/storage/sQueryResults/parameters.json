@@ -1,5 +1,5 @@
 {
-  "bucketName": "aws-athena-query-results-aa-j68ch5wauh6v",
+  "bucketName": "aws-athena-query-results",
   "authPolicyName": "s3_amplify_0d867d89",
   "unauthPolicyName": "s3_amplify_0d867d89",
   "authRoleName": {
