@@ -1,8 +1,5 @@
 {
-    "providers": [
-        "awscloudformation"
-    ],
-    "projectName": "aws-appsync-visualization-with-athena-app-auth",
+    "projectName": "AppSyncAthenaViz",
     "version": "2.0",
     "frontend": "javascript",
     "javascript": {
@@ -13,5 +10,8 @@
             "BuildCommand": "npm run-script build",
             "StartCommand": "npm run-script start"
         }
-    }
+    },
+    "providers": [
+        "awscloudformation"
+    ]
 }
