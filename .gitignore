@@ -11,5 +11,6 @@ dist/
 node_modules/
 aws-exports.js
 awsconfiguration.json
-#macs
-.DS_Store
+amplifyconfiguration.json
+amplify-gradle-config.json
+amplifyxc.config

@@ -1,4 +1,17 @@
 {
+    "withauth": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-appsyncathenaviz-withauth-32838-authRole",
+            "UnauthRoleArn": "arn:aws:iam::714090130982:role/amplify-appsyncathenaviz-withauth-32838-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::714090130982:role/amplify-appsyncathenaviz-withauth-32838-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-appsyncathenaviz-withauth-32838-deployment",
+            "UnauthRoleName": "amplify-appsyncathenaviz-withauth-32838-unauthRole",
+            "StackName": "amplify-appsyncathenaviz-withauth-32838",
+            "StackId": "arn:aws:cloudformation:us-east-1:714090130982:stack/amplify-appsyncathenaviz-withauth-32838/a60523f0-220f-11ea-bbb6-0edf444c3fff",
+            "AmplifyAppId": "d23aytoyhb5ksq"
+        }
+    },
     "sfoloft": {
         "awscloudformation": {
             "AuthRoleName": "amplify-appsyncathenaviz-sfoloft-223456-authRole",
