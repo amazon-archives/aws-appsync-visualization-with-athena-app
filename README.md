@@ -12,6 +12,7 @@ This public dataset provides "population data for a selection of countries, allo
 
 ## Updates
 
+* 12/19/19: New branch `with-auth` that provides an implementation that tracks request per owner in a DynamoDB table. In introduces a pipeline resolver with 2 functions to interact with Amazon Athena and AWS Lambda in a single query.
 * 11/11/19: Updated to support multi auth with Amplify CLI. Requires Amplify CLI version 3.17 and above.
 
 ## Getting started
@@ -60,8 +61,11 @@ Here is how the application works:
 
 1. Users sign in to the app using Amazon Cognito User Pools. The JWT access token returned at sign-in is sent in an authorization header to AWS AppSync with every GraphQL operation.
 2. A user selects a country from the drop-down list and chooses Query. This triggers a GraphQL query. When the app receives the `QueryExecutionId` in the response, it subscribes to mutations on that ID.
-3. AWS AppSync makes a SigV4-signed request to the Athena API with the specified query.
-4. Athena runs the query against the specified table. The query returns the sum of the population at recorded longitudes for the selected country along with a count of latitudes at each longitude.
+3. Pipeline resolver:
+   1. AWS AppSync makes a SigV4-signed request to the Athena API with the specified query.
+   2. The results of the query request are sent to a Lambda function.
+4. Lambda function stores the operation details for the owner in a DynamoDB table using AWS AppSync.
+5. Athena runs the query against the specified table. The query returns the sum of the population at recorded longitudes for the selected country along with a count of latitudes at each longitude.
     ```sql
     SELECT longitude, count(latitude) as count, sum(population) as tot_pop
       FROM "default"."hrsl"
@@ -69,10 +73,10 @@ Here is how the application works:
       group by longitude
       order by longitude
     ```
-5. The results of the query are stored in the result S3 bucket, under the `/protected/athena/` prefix. Signed-in app users can access these results using their IAM credentials.
-6. Putting the query result file in the bucket generates an S3 event and triggers the announcer Lambda function.
-7. The announcer Lambda function sends an `announceQueryResult` mutation with the S3 bucket and object information.
-8. The mutation triggers a subscription with the mutation's selection set.
-9. The client retrieves the result file from the S3 bucket and displays the custom visualization.
+6. The results of the query are stored in the result S3 bucket, under the `/protected/athena/` prefix. Signed-in app users can access these results using their IAM credentials.
+7. Putting the query result file in the bucket generates an S3 event and triggers the announcer Lambda function.
+8. The announcer Lambda function sends an `announceQueryResult` mutation with the S3 bucket and object information.
+9.  The mutation triggers a subscription with the mutation's selection set.
+10. The client retrieves the result file from the S3 bucket and displays the custom visualization.
 
 ![Custom visualization of population density by longitudes](app-image.png)
