@@ -1,21 +1,35 @@
-input AnnounceInput {
-  QueryExecutionId: ID
-  file: S3ObjectInput
-}
-type AthenaQueryResult @aws_cognito_user_pools @aws_iam {
-  QueryExecutionId: ID!
+type AthenaOperation
+  @model
+  @key(
+    name: "ByOwner"
+    fields: ["owner", "createdAt"]
+    queryField: "queryByOwner"
+  )
+  @auth(
+    rules: [
+      { allow: owner, identityClaim: "sub" }
+      { allow: private, provider: iam, operations: [create, update] }
+    ]
+  ) {
+  id: ID!
+  queryString: String!
+  countryCode: String!
+  owner: String
+  status: STATUS!
   file: S3Object
+  createdAt: String
 }
-type Mutation {
-  announceQueryResult(input: AnnounceInput!): AthenaQueryResult @aws_iam
+
+enum STATUS {
+  REQUESTED
+  COMPLETED
 }
+
 type Query {
-  startQuery(input: QueryInput): AthenaQueryResult
+  startQuery(queryString: String!, countryCode: String!): AthenaOperation
 }
-input QueryInput {
-  QueryString: String!
-}
-type S3Object @aws_iam {
+
+type S3Object @aws_iam @aws_cognito_user_pools {
   bucket: String!
   region: String!
   key: String!
@@ -24,8 +38,4 @@ input S3ObjectInput {
   bucket: String!
   region: String!
   key: String!
-}
-type Subscription {
-  onAnnouncement(QueryExecutionId: ID!): AthenaQueryResult
-    @aws_subscribe(mutations: ["announceQueryResult"])
 }

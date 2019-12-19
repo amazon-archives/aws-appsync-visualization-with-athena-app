@@ -1,4 +1,7 @@
 {
+    "providers": [
+        "awscloudformation"
+    ],
     "projectName": "AppSyncAthenaViz",
     "version": "2.0",
     "frontend": "javascript",
@@ -7,11 +10,8 @@
         "config": {
             "SourceDir": "src",
             "DistributionDir": "build",
-            "BuildCommand": "yarn build",
-            "StartCommand": "yarn start"
+            "BuildCommand": "npm run-script build",
+            "StartCommand": "npm run-script start"
         }
-    },
-    "providers": [
-        "awscloudformation"
-    ]
+    }
 }

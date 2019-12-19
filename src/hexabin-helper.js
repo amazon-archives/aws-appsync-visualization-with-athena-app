@@ -111,6 +111,9 @@ function getHexbin(x, y) {
 }
 
 export function drawChart(data) {
+  d3.select('svg')
+    .selectAll('*')
+    .remove()
   console.log(data)
   const x = getX(data)
   const y = getY(data)

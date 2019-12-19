@@ -1,0 +1,21 @@
+@media (min-width: 768px) {
+  .sidemenu-collapse {
+    overflow: hidden;
+    display: block !important;
+    height: 100% !important;
+  }
+  .button-collapse {
+    display: none;
+  }
+  .main-navbar {
+    flex-wrap: wrap !important;
+  }
+}
+
+.main-navbar {
+  flex-wrap: nowrap;
+}
+
+.sep-button {
+  border-top: 1px solid #ccc;
+}

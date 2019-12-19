@@ -33,7 +33,15 @@
         "RoleName": {
           "Fn::Join": [
             "-",
-            ["appSyncAthenaRole", { "Ref": "AppSyncApiId" }, { "Ref": "env" }]
+            [
+              "appSyncAthenaRole",
+              {
+                "Ref": "AppSyncApiId"
+              },
+              {
+                "Ref": "env"
+              }
+            ]
           ]
         },
         "ManagedPolicyArns": [
@@ -60,95 +68,339 @@
         "ApiId": {
           "Ref": "AppSyncApiId"
         },
-        "Name": "AthenaAPI",
+        "Name": "AMAZON_ATHENA_API",
         "Description": "Athena API",
         "Type": "HTTP",
-        "ServiceRoleArn": { "Fn::GetAtt": ["AppSyncAthenaRole", "Arn"] },
+        "ServiceRoleArn": {
+          "Fn::GetAtt": ["AppSyncAthenaRole", "Arn"]
+        },
         "HttpConfig": {
           "Endpoint": {
             "Fn::Join": [
               ".",
-              ["https://athena", { "Ref": "AWS::Region" }, "amazonaws.com/"]
+              [
+                "https://athena",
+                {
+                  "Ref": "AWS::Region"
+                },
+                "amazonaws.com/"
+              ]
             ]
           },
           "AuthorizationConfig": {
             "AuthorizationType": "AWS_IAM",
             "AwsIamConfig": {
-              "SigningRegion": { "Ref": "AWS::Region" },
+              "SigningRegion": {
+                "Ref": "AWS::Region"
+              },
               "SigningServiceName": "athena"
             }
           }
         }
+      },
+      "DependsOn": "AppSyncAthenaRole"
+    },
+    "InitStartQueryLambdaDataSourceRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": {
+          "Fn::If": [
+            "HasEnvironmentParameter",
+            {
+              "Fn::Join": [
+                "-",
+                [
+                  "ISQLDS-Role",
+                  {
+                    "Ref": "AppSyncApiId"
+                  },
+                  {
+                    "Ref": "env"
+                  }
+                ]
+              ]
+            },
+            {
+              "Fn::Join": [
+                "-",
+                [
+                  "ISQLDS-Role",
+                  {
+                    "Ref": "AppSyncApiId"
+                  }
+                ]
+              ]
+            }
+          ]
+        },
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "appsync.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "InvokeLambdaFunction",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": ["lambda:InvokeFunction"],
+                  "Resource": {
+                    "Fn::If": [
+                      "HasEnvironmentParameter",
+                      {
+                        "Fn::Sub": [
+                          "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:initStartQuery-${env}",
+                          {
+                            "env": {
+                              "Ref": "env"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "Fn::Sub": [
+                          "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:initStartQuery",
+                          {}
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
       }
     },
-    "DataSourceNone": {
+    "InitStartQueryLambdaDataSource": {
       "Type": "AWS::AppSync::DataSource",
       "Properties": {
         "ApiId": {
           "Ref": "AppSyncApiId"
         },
-        "Name": "None",
-        "Description": "None",
-        "Type": "NONE"
-      }
+        "Name": "INIT_START_QUERY",
+        "Type": "AWS_LAMBDA",
+        "ServiceRoleArn": {
+          "Fn::GetAtt": ["InitStartQueryLambdaDataSourceRole", "Arn"]
+        },
+        "LambdaConfig": {
+          "LambdaFunctionArn": {
+            "Fn::If": [
+              "HasEnvironmentParameter",
+              {
+                "Fn::Sub": [
+                  "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:initStartQuery-${env}",
+                  {
+                    "env": {
+                      "Ref": "env"
+                    }
+                  }
+                ]
+              },
+              {
+                "Fn::Sub": [
+                  "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:initStartQuery",
+                  {}
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "DependsOn": "InitStartQueryLambdaDataSourceRole"
     },
-    "QueryStartQueryResolver": {
+    "InvokeInitStartQueryLambdaDataSource": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "AppSyncApiId"
+        },
+        "Name": "InvokeInitStartQueryLambdaDataSource",
+        "DataSourceName": "INIT_START_QUERY",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+            {
+              "S3DeploymentBucket": {
+                "Ref": "S3DeploymentBucket"
+              },
+              "S3DeploymentRootKey": {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "ResolverFileName": {
+                "Fn::Join": [
+                  ".",
+                  [
+                    "Function",
+                    "InvokeInitStartQueryLambdaDataSource",
+                    "req",
+                    "vtl"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+            {
+              "S3DeploymentBucket": {
+                "Ref": "S3DeploymentBucket"
+              },
+              "S3DeploymentRootKey": {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "ResolverFileName": {
+                "Fn::Join": [
+                  ".",
+                  [
+                    "Function",
+                    "InvokeInitStartQueryLambdaDataSource",
+                    "res",
+                    "vtl"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "DependsOn": "InitStartQueryLambdaDataSource"
+    },
+    "InvokeInitStartQueryAthenaDataSource": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "AppSyncApiId"
+        },
+        "Name": "InvokeInitStartQueryAthenaDataSource",
+        "DataSourceName": "AMAZON_ATHENA_API",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+            {
+              "S3DeploymentBucket": {
+                "Ref": "S3DeploymentBucket"
+              },
+              "S3DeploymentRootKey": {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "ResolverFileName": {
+                "Fn::Join": [
+                  ".",
+                  [
+                    "Function",
+                    "InvokeInitStartQueryAthenaDataSource",
+                    "req",
+                    "vtl"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+            {
+              "S3DeploymentBucket": {
+                "Ref": "S3DeploymentBucket"
+              },
+              "S3DeploymentRootKey": {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "ResolverFileName": {
+                "Fn::Join": [
+                  ".",
+                  [
+                    "Function",
+                    "InvokeInitStartQueryAthenaDataSource",
+                    "res",
+                    "vtl"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "DependsOn": "DataSourceAthenaAPI"
+    },
+    "QuerystartQueryResolver": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
         "ApiId": {
           "Ref": "AppSyncApiId"
         },
-        "DataSourceName": { "Fn::GetAtt": ["DataSourceAthenaAPI", "Name"] },
         "TypeName": "Query",
         "FieldName": "startQuery",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "InvokeInitStartQueryAthenaDataSource",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "InvokeInitStartQueryLambdaDataSource",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
         "RequestMappingTemplateS3Location": {
           "Fn::Sub": [
-            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Query.startQuery.req.vtl",
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
             {
-              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
-              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+              "S3DeploymentBucket": {
+                "Ref": "S3DeploymentBucket"
+              },
+              "S3DeploymentRootKey": {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "ResolverFileName": {
+                "Fn::Join": [".", ["Query", "startQuery", "req", "vtl"]]
+              }
             }
           ]
         },
         "ResponseMappingTemplateS3Location": {
           "Fn::Sub": [
-            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Query.startQuery.res.vtl",
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
             {
-              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
-              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
+              "S3DeploymentBucket": {
+                "Ref": "S3DeploymentBucket"
+              },
+              "S3DeploymentRootKey": {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "ResolverFileName": {
+                "Fn::Join": [".", ["Query", "startQuery", "res", "vtl"]]
+              }
             }
           ]
         }
-      }
-    },
-    "AnnounceQueryResultResolver": {
-      "Type": "AWS::AppSync::Resolver",
-      "Properties": {
-        "ApiId": {
-          "Ref": "AppSyncApiId"
-        },
-        "DataSourceName": { "Fn::GetAtt": ["DataSourceNone", "Name"] },
-        "TypeName": "Mutation",
-        "FieldName": "announceQueryResult",
-        "RequestMappingTemplateS3Location": {
-          "Fn::Sub": [
-            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.announceQueryResult.req.vtl",
-            {
-              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
-              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
-            }
-          ]
-        },
-        "ResponseMappingTemplateS3Location": {
-          "Fn::Sub": [
-            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.announceQueryResult.res.vtl",
-            {
-              "S3DeploymentBucket": { "Ref": "S3DeploymentBucket" },
-              "S3DeploymentRootKey": { "Ref": "S3DeploymentRootKey" }
-            }
-          ]
-        }
-      }
+      },
+      "DependsOn": [
+        "InvokeInitStartQueryLambdaDataSource",
+        "InvokeInitStartQueryAthenaDataSource"
+      ]
     }
   },
   "Conditions": {

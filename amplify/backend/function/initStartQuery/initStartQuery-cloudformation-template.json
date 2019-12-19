@@ -36,12 +36,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"S3Trigger20d9f806",
+						"initStartQuery",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"S3Trigger20d9f806",
+									"initStartQuery",
 									"-",
 									{
 										"Ref": "env"
@@ -73,11 +73,11 @@
 						"Arn"
 					]
 				},
-				"Runtime": "nodejs8.10",
+				"Runtime": "nodejs10.x",
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-app-ath-local-confirm-225244-deployment",
-					"S3Key": "amplify-builds/S3Trigger20d9f806-6e335445685433627146-build.zip"
+					"S3Key": "amplify-builds/initStartQuery-704c36717a66324e5133-build.zip"
 				}
 			}
 		},
@@ -87,12 +87,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"S3Trigger20d9f806LambdaRole20d9f806",
+						"appathlocalLambdaRolec5da873d",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"S3Trigger20d9f806LambdaRole20d9f806",
+									"appathlocalLambdaRolec5da873d",
 									"-",
 									{
 										"Ref": "env"

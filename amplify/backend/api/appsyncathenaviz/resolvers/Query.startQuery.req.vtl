@@ -1,17 +1,5 @@
-{
-  "version": "2018-05-29",
-  "method": "POST",
-  "resourcePath": "/",
-  "params": {
-    "headers": {
-      "content-type": "application/x-amz-json-1.1",
-      "x-amz-target":"AmazonAthena.StartQueryExecution"
-    },
-    "body": {
-      "QueryString": $util.toJson("$ctx.args.input.QueryString"),
-      "ClientRequestToken": "$util.autoId()",
-      "QueryExecutionContext": {"Database": "default"},
-      "WorkGroup": "appsync"
-    }
-  }
-}
+## [Start] Stash resolver specific context.. **
+$util.qr($ctx.stash.put("typeName", "Query"))
+$util.qr($ctx.stash.put("fieldName", "startQuery"))
+{}
+## [End] Stash resolver specific context.. **

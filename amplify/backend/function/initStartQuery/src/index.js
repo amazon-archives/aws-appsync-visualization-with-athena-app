@@ -2,42 +2,29 @@
 You can access the following resource attributes as environment variables from your Lambda function
 var environment = process.env.ENV
 var region = process.env.REGION
-var apiAthenaGraphQlAPIGraphQLAPIIdOutput = process.env.API_APPSYNCATHENAVIZ_GRAPHQLAPIIDOUTPUT
-var apiAthenaGraphQlAPIGraphQLAPIEndpointOutput = process.env.API_APPSYNCATHENAVIZ_GRAPHQLAPIENDPOINTOUTPUT
-
+var apiAppsyncathenavizGraphQLAPIIdOutput = process.env.API_APPSYNCATHENAVIZ_GRAPHQLAPIIDOUTPUT
+var apiAppsyncathenavizGraphQLAPIEndpointOutput = process.env.API_APPSYNCATHENAVIZ_GRAPHQLAPIENDPOINTOUTPUT
 Amplify Params - DO NOT EDIT */
 
 const AWS = require('aws-sdk')
 const https = require('https')
 const URL = require('url').URL
-const mutation = require('./mutation').updateAthenaOperation
+const mutation = require('./mutation').createAthenaOperation
 
 const apiRegion = process.env.REGION
 const apiEndpoint = process.env.API_APPSYNCATHENAVIZ_GRAPHQLAPIENDPOINTOUTPUT
 const endpoint = new URL(apiEndpoint).hostname.toString()
 
-exports.handler = async (event, context) => {
-  // Get the object from the event and show its content type
-  const region = event.Records[0].awsRegion
-  const bucket = event.Records[0].s3.bucket.name
-  const key = event.Records[0].s3.object.key
-
-  console.log('S3 Event -->')
-  console.log(JSON.stringify({ region, bucket, key }, null, 2))
-
-  const match = key.match(/([\w-]+)\.csv$/)
-  if (!match) return
-  const QueryExecutionId = match[1]
+exports.handler = async function(event, context) {
+  console.log(JSON.stringify(event, null, 2))
 
   const variables = {
     input: {
-      id: QueryExecutionId,
-      status: 'COMPLETED',
-      file: {
-        bucket,
-        region,
-        key
-      }
+      id: event.prev.result.QueryExecutionId,
+      owner: event.identity.claims.sub,
+      queryString: event.arguments.queryString,
+      countryCode: event.arguments.countryCode,
+      status: 'REQUESTED'
     }
   }
 
@@ -47,7 +34,7 @@ exports.handler = async (event, context) => {
   req.headers['Content-Type'] = 'application/json'
   req.body = JSON.stringify({
     query: mutation,
-    operationName: 'UpdateAthenaOperation',
+    operationName: 'CreateAthenaOperation',
     variables,
     authMode: 'AWS_IAM'
   })
@@ -64,8 +51,5 @@ exports.handler = async (event, context) => {
     httpRequest.write(req.body)
     httpRequest.end()
   })
-  console.log('data -->')
-  console.log(JSON.stringify(result, null, 2))
-
-  return
+  return result.data.createAthenaOperation
 }

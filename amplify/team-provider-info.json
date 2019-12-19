@@ -1,0 +1,61 @@
+{
+    "sfoloft": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-appsyncathenaviz-sfoloft-223456-authRole",
+            "UnauthRoleArn": "arn:aws:iam::714090130982:role/amplify-appsyncathenaviz-sfoloft-223456-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::714090130982:role/amplify-appsyncathenaviz-sfoloft-223456-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-appsyncathenaviz-sfoloft-223456-deployment",
+            "UnauthRoleName": "amplify-appsyncathenaviz-sfoloft-223456-unauthRole",
+            "StackName": "amplify-appsyncathenaviz-sfoloft-223456",
+            "StackId": "arn:aws:cloudformation:us-east-1:714090130982:stack/amplify-appsyncathenaviz-sfoloft-223456/75f67730-1c66-11ea-8adf-12eea7535b9e",
+            "AmplifyAppId": "d2m0i98hcxgr5r"
+        }
+    },
+    "fresh": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-app-ath-local-fresh-161043-authRole",
+            "UnauthRoleArn": "arn:aws:iam::714090130982:role/amplify-app-ath-local-fresh-161043-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::714090130982:role/amplify-app-ath-local-fresh-161043-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-app-ath-local-fresh-161043-deployment",
+            "UnauthRoleName": "amplify-app-ath-local-fresh-161043-unauthRole",
+            "StackName": "amplify-app-ath-local-fresh-161043",
+            "StackId": "arn:aws:cloudformation:us-east-1:714090130982:stack/amplify-app-ath-local-fresh-161043/81a0e620-1df5-11ea-9300-0ee5b74c6229",
+            "AmplifyAppId": "d2m0i98hcxgr5r"
+        },
+        "categories": {
+            "auth": {
+                "appsyncathenavizb9ef8f65": {}
+            },
+            "function": {
+                "S3Trigger20d9f806": {},
+                "initStartQuery": {},
+                "appsyncathenaviz": {}
+            }
+        }
+    },
+    "confirm": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-app-ath-local-confirm-225244-authRole",
+            "UnauthRoleArn": "arn:aws:iam::714090130982:role/amplify-app-ath-local-confirm-225244-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::714090130982:role/amplify-app-ath-local-confirm-225244-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-app-ath-local-confirm-225244-deployment",
+            "UnauthRoleName": "amplify-app-ath-local-confirm-225244-unauthRole",
+            "StackName": "amplify-app-ath-local-confirm-225244",
+            "StackId": "arn:aws:cloudformation:us-east-1:714090130982:stack/amplify-app-ath-local-confirm-225244/1149d080-2089-11ea-9541-0ab6cdd0d422",
+            "AmplifyAppId": "d2m0i98hcxgr5r"
+        },
+        "categories": {
+            "auth": {
+                "appsyncathenavizb9ef8f65": {}
+            },
+            "function": {
+                "S3Trigger20d9f806": {},
+                "initStartQuery": {},
+                "appsyncathenaviz": {}
+            }
+        }
+    }
+}
