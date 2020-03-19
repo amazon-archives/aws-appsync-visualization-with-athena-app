@@ -7,7 +7,7 @@ if [ -z "$RESULT_BUCKET_SUFFIX" ]; then
   suffix="aa-$rand"
   echo "Using new prefix: $suffix"
 else
-  echo "Using exiting prefix: $RESULT_BUCKET_SUFFIX"
+  echo "Using existing prefix: $RESULT_BUCKET_SUFFIX"
   suffix="$RESULT_BUCKET_SUFFIX"
 fi
 sed -i "s/aws-athena-query-results[^\"]*/aws-athena-query-results-$suffix/" $file
