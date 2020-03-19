@@ -33,5 +33,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^2.1.0",
+    "postcss-cli": "^7.1.0",
+    "tailwindcss": "^1.2.0"
   }
 }
