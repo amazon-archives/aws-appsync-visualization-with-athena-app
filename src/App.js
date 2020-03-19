@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import Amplify, { API, graphqlOperation, Storage, Auth } from 'aws-amplify'
 import { withAuthenticator } from 'aws-amplify-react'
 import * as d3 from 'd3'
@@ -22,15 +22,6 @@ import Spinner from 'react-bootstrap/Spinner'
 import './App.css'
 
 Amplify.configure(awsconfig)
-
-function sqlQuery(code) {
-  return `
-  SELECT longitude, count(latitude) as count, sum(population) as tot_pop
-  FROM "default"."hrsl"
-  WHERE country='${code.trim()}'
-  group by longitude
-  order by longitude`
-}
 
 const App = () => {
   const [isSending, setIsSending] = useState(false)
