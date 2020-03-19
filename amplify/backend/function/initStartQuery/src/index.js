@@ -22,7 +22,7 @@ exports.handler = async function(event, context) {
     input: {
       id: event.prev.result.QueryExecutionId,
       owner: event.identity.claims.sub,
-      queryString: event.arguments.queryString,
+      queryString: event.stash.queryString,
       countryCode: event.arguments.countryCode,
       status: 'REQUESTED'
     }

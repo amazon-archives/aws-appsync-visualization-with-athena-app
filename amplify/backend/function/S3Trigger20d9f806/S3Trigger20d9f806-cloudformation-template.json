@@ -73,7 +73,7 @@
 						"Arn"
 					]
 				},
-				"Runtime": "nodejs8.10",
+				"Runtime": "nodejs10.x",
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "appsyncathenaviz-dev-20190907144428-deployment",
