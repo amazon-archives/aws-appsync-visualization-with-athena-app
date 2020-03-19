@@ -76,8 +76,8 @@
 				"Runtime": "nodejs10.x",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-appsyncathenaviz-devu-213727-deployment",
-					"S3Key": "amplify-builds/initStartQuery-67696939707a75774c63-build.zip"
+					"S3Bucket": "amplify-appsyncathenaviz-withauth-32838-deployment",
+					"S3Key": "amplify-builds/initStartQuery-3345764c6161566b7479-build.zip"
 				}
 			}
 		},
