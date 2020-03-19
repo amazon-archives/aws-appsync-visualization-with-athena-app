@@ -102,7 +102,6 @@ const App = () => {
     try {
       const result = await API.graphql(
         graphqlOperation(queries.startQuery, {
-          queryString: sqlQuery(countryCode),
           countryCode
         })
       )

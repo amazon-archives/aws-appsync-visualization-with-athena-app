@@ -1,0 +1,15 @@
+{
+    "devu": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-appsyncathenaviz-devu-213727-authRole",
+            "UnauthRoleArn": "arn:aws:iam::714090130982:role/amplify-appsyncathenaviz-devu-213727-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::714090130982:role/amplify-appsyncathenaviz-devu-213727-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-appsyncathenaviz-devu-213727-deployment",
+            "UnauthRoleName": "amplify-appsyncathenaviz-devu-213727-unauthRole",
+            "StackName": "amplify-appsyncathenaviz-devu-213727",
+            "StackId": "arn:aws:cloudformation:us-east-1:714090130982:stack/amplify-appsyncathenaviz-devu-213727/aadd7b00-6960-11ea-8df0-0af77bd56d08",
+            "AmplifyAppId": "d1ekecwkkqbdu"
+        }
+    }
+}

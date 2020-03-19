@@ -1,3 +1,11 @@
+#set($code = $util.escapeJavaScript("$ctx.args.countryCode"))
+#set($qs = "SELECT longitude, count(latitude) as count, sum(population) as tot_pop")
+#set($qs = "$qs  FROM ""default"".""hrsl""")
+#set($qs = "$qs  WHERE country=")
+#set($qs = "$qs  '${code}'")
+#set($qs = "$qs  group by longitude")
+#set($qs = "$qs  order by longitude")
+$util.qr($ctx.stash.put("queryString", "$qs"))
 {
   "version": "2018-05-29",
   "method": "POST",
@@ -8,7 +16,7 @@
       "x-amz-target":"AmazonAthena.StartQueryExecution"
     },
     "body": {
-      "QueryString": $util.toJson("$ctx.args.queryString"),
+      "QueryString": $util.toJson("$qs"),
       "ClientRequestToken": "$util.autoId()",
       "QueryExecutionContext": {"Database": "default"},
       "WorkGroup": "appsync"
