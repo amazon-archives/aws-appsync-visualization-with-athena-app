@@ -1,4 +1,7 @@
-version: 0.1
+version: 1.0
+env:
+  variables:
+    NODE_ENV: production
 backend:
   phases:
     preBuild:
