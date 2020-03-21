@@ -8,7 +8,7 @@ if [ -z "$RESULT_BUCKET_SUFFIX" ]; then
   rand=`dd if=/dev/urandom bs=9 count=1 2>/dev/null | base64 | tr '+/' 'a'| tr '[:upper:]' '[:lower:]'`
   suffix="aa-$rand"
   echo "Using new prefix: $suffix"
-  envCache --set stackInfo ${suffix}
+  envCache --set resultBucketSuffix ${suffix}
 else
   echo "Using existing prefix: $RESULT_BUCKET_SUFFIX"
   suffix="$RESULT_BUCKET_SUFFIX"
