@@ -2,7 +2,7 @@
     "providers": [
         "awscloudformation"
     ],
-    "projectName": "aws-appsync-visualization-with-athena-app",
+    "projectName": "aws-appsync-with-athena-app",
     "version": "3.0",
     "frontend": "javascript",
     "javascript": {
