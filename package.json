@@ -1,5 +1,5 @@
 {
-  "name": "aws-appsync-visualization-with-athena-app",
+  "name": "aws-appsync-with-athena-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
