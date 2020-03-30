@@ -111,7 +111,7 @@ function getHexbin(x, y) {
 }
 
 export function drawChart(data) {
-  d3.select('svg')
+  d3.select('.chart')
     .selectAll('*')
     .remove()
   console.log(data)
@@ -123,7 +123,7 @@ export function drawChart(data) {
   const color = getColor(bins)
   const xAxis = getxAxis(x)
   const yAxis = getyAxis(y)
-  const svg = d3.select('svg').attr('viewBox', [0, 0, width, height])
+  const svg = d3.select('.chart').attr('viewBox', [0, 0, width, height])
   console.log(svg)
 
   svg.append('g').call(xAxis)

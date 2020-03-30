@@ -1,4 +1,4 @@
-version: 0.1
+version: 1.0
 backend:
   phases:
     preBuild:
@@ -16,7 +16,7 @@ frontend:
         - yarn install
     build:
       commands:
-        - yarn run build
+        - NODE_ENV=production yarn run build
   artifacts:
     baseDirectory: build
     files:

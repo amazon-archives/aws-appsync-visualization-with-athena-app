@@ -1,0 +1,21 @@
+/* purgecss start ignore */
+@tailwind base;
+@tailwind components;
+/* purgecss end ignore */
+
+body {
+  @apply bg-gray-100 text-gray-800;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  display: inline-block;
+  animation: spinner 2s linear infinite;
+}
+
+@tailwind utilities;

@@ -12,7 +12,9 @@ This public dataset provides "population data for a selection of countries, allo
 
 ## Updates
 
-* 12/19/19: New branch `with-auth` provides an implementation that tracks request per owner in a DynamoDB table. In introduces a pipeline resolver with 2 functions to interact with Amazon Athena and AWS Lambda in a single query. Using a `@dynamodb` and `@auth` transformer, access to past queries is limited to the query owners and the Lambda functions that create and update the table entries. To view the intial release (minus the auth), go to the [initial-release](https://github.com/aws-samples/aws-appsync-visualization-with-athena-app/tree/initial-release) branch.
+* 03/30/2020: Use envCache to define unique bucket per build environment
+* 03/21/2020: Update layout with tailwindcss.
+* 12/19/2019: New branch `with-auth` provides an implementation that tracks request per owner in a DynamoDB table. In introduces a pipeline resolver with 2 functions to interact with Amazon Athena and AWS Lambda in a single query. Using a `@dynamodb` and `@auth` transformer, access to past queries is limited to the query owners and the Lambda functions that create and update the table entries. To view the intial release (minus the auth), go to the [initial-release](https://github.com/aws-samples/aws-appsync-visualization-with-athena-app/tree/initial-release) branch.
   ```graphql
   type AthenaOperation
   @model
